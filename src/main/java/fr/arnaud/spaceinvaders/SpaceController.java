@@ -1,5 +1,6 @@
 package fr.arnaud.spaceinvaders;
 
+import fr.arnaud.spaceinvaders.entities.Alien;
 import fr.arnaud.spaceinvaders.entities.Brick;
 import fr.arnaud.spaceinvaders.entities.Ship;
 import fr.arnaud.spaceinvaders.entities.ShipShot;
@@ -22,6 +23,7 @@ public class SpaceController {
     private AnimationTimer timer;
     private int shipDeltaX;
     private List<Brick> walls;
+    private Alien[][] aliens;
 
     @FXML
     private Pane board;
@@ -47,8 +49,10 @@ public class SpaceController {
     public void initGame() {
         ship = new Ship(Constants.X_PDS_INIT_SHIP,Constants.Y_PDS_INIT_SHIP,
                 Constants.SHIP_WIDTH,Constants.SHIP_HEIGHT);
-        shipShot = new ShipShot(0 - Constants.SHIP_SHOT_WIDTH,0 - Constants.SHIP_SHOT_HEIGHT,Constants.SHIP_SHOT_WIDTH,Constants.SHIP_SHOT_HEIGHT);
+        shipShot = new ShipShot(-10,-10,Constants.SHIP_SHOT_WIDTH,Constants.SHIP_SHOT_HEIGHT);
         walls = new LinkedList<>();
+        aliens = new  Alien[5][10];
+
 
         lblEndGame.setText("");
     }
@@ -60,6 +64,7 @@ public class SpaceController {
         Initialisation.initShip(ship, board);
         Initialisation.initShipShot(shipShot, board);
         Initialisation.initWalls(80, 400, 80, walls, board);
+        Initialisation.initAliens(aliens, board);
         timer.start();
     }
 
