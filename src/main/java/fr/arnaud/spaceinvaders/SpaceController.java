@@ -1,13 +1,13 @@
 package fr.arnaud.spaceinvaders;
 
-import fr.arnaud.spaceinvaders.entities.Alien;
-import fr.arnaud.spaceinvaders.entities.Brick;
-import fr.arnaud.spaceinvaders.entities.Ship;
-import fr.arnaud.spaceinvaders.entities.ShipShot;
-import fr.arnaud.spaceinvaders.utils.Constants;
-import fr.arnaud.spaceinvaders.utils.Initialisation;
+import fr.arnaud.spaceinvaders.entities.*;
+import fr.arnaud.spaceinvaders.utils.*;
 import javafx.animation.AnimationTimer;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -24,23 +24,34 @@ public class SpaceController {
     private int shipDeltaX;
     private List<Brick> walls;
     private Alien[][] aliens;
+    private static long movingAliensCount;
+    private Group groupExplosion;
+    private final IntegerProperty score = new SimpleIntegerProperty(0);
+
 
     @FXML
     private Pane board;
 
     @FXML
-    private Label lblEndGame, LdlScore;
+    private Label lblEndGame, lblScore;
 
     public SpaceController() {
         timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                movingAliensCount++;
                 handleShip();
-
                 if (ship.isShipIsShooting()) {
                     handleShipShot();
-                    shipShotCollisions();
+
                 }
+                shipShotCollisions();
+
+                // On refresh la position tableau d'aliens en fonction de l'incrémentation de leur vitesse
+                if (movingAliensCount % (100 - (10L * Alien.getSpeed())) == 0) {
+                    Alien.aliensMoving(aliens);
+                }
+
 
             }
         };
@@ -52,7 +63,7 @@ public class SpaceController {
         shipShot = new ShipShot(-10,-10,Constants.SHIP_SHOT_WIDTH,Constants.SHIP_SHOT_HEIGHT);
         walls = new LinkedList<>();
         aliens = new  Alien[5][10];
-
+        movingAliensCount = 0;
 
         lblEndGame.setText("");
     }
@@ -66,6 +77,7 @@ public class SpaceController {
         Initialisation.initWalls(80, 400, 80, walls, board);
         Initialisation.initAliens(aliens, board);
         timer.start();
+        lblScore.textProperty().bind(Bindings.convert(score));
     }
 
     @FXML
@@ -83,6 +95,7 @@ public class SpaceController {
                 if (!ship.isShipIsShooting()) {
                     ship.setShipIsShooting(true);
                     ShipShot.shipShotPlacement(shipShot, ship);
+                    Audio.playSound(Sounds.SHIP_SHOT);
                 }
                 break;
 
@@ -115,10 +128,38 @@ public class SpaceController {
                     // On retire la brick Brick du mur walls
                     walls.removeIf(thisBrick -> thisBrick.equals(brick));
                     board.getChildren().remove(brick);
+                    // On met à jour le score avec la collision d'un tir sur une brick
+                    if (score.get() >= Constants.BRICK_POINTS) {
+                        score.set(score.get() - Constants.BRICK_POINTS);
+                    }
                 }
             }
+
         } catch (ConcurrentModificationException e) {
             System.out.println("Concurent Exception Ship -> Brick");
+        }
+        // Collision avec un alien
+        for (Alien[] alienRow: aliens) {
+            for (Alien alien: alienRow) {
+                if (alien.getBoundsInParent().intersects(shipShot.getBoundsInParent())) {
+                    //On remplace le tir hors du board
+                    shipShot.setX(-10);
+                    shipShot.setY(-10);
+                    // On réautorise à tirer en appuyant sur ESPACE
+                    ship.setShipIsShooting(false);
+                    groupExplosion = new Group(Explosion.explode());
+                    groupExplosion.setLayoutX(alien.getX()-10);
+                    groupExplosion.setLayoutY(alien.getY()-10);
+                    board.getChildren().addAll(groupExplosion);
+                    // On sort l'alien du board
+                    alien.setX(100);
+                    alien.setY(-600);
+                    // On retire l'alien du board
+                    board.getChildren().remove(alien);
+                    // On met à jour notre score suivant le type d'alien
+                    score.set(score.get() + Constants.ALIEN_POINTS * alien.getType());
+                }
+            }
         }
 
     }

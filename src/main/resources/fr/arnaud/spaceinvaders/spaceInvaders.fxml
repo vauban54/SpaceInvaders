@@ -70,7 +70,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="ldlScore" text="1000" textFill="#009402">
+            <Label fx:id="lblScore" text="1000" textFill="#009402">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>

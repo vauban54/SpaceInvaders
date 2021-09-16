@@ -4,6 +4,7 @@ import fr.arnaud.spaceinvaders.entities.Alien;
 import fr.arnaud.spaceinvaders.entities.Brick;
 import fr.arnaud.spaceinvaders.entities.Ship;
 import fr.arnaud.spaceinvaders.entities.ShipShot;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
@@ -22,6 +23,7 @@ public class Initialisation {
         board.getChildren().add(shipShot);
 
     }
+
 
     public static void initWalls(int x, int y, int xNextLine, List<Brick> walls, Pane board) {
         for (int i = 0; i <= 3; i++) {
@@ -63,19 +65,19 @@ public class Initialisation {
         for (int colonne = 0; colonne < 10; colonne++) {
             aliens[0][colonne] = new Alien(Constants.X_POS_INIT_ALIEN +
                     (Constants.ALIEN_WIDTH + Constants.GAP_COLUMNS_ALIEN) * colonne, Constants.Y_POS_INIT_ALIEN,
-                    Constants.ALIEN_WIDTH, Constants.ALIEN_HEIGHT, Images.ALIENHIGHT1);
+                    Constants.ALIEN_WIDTH, Constants.ALIEN_HEIGHT, Images.ALIENHIGHT1, 3);
             for (int line = 1; line < 3; line++) {
                 aliens[line][colonne] = new Alien(Constants.X_POS_INIT_ALIEN +
                         (Constants.ALIEN_WIDTH + Constants.GAP_COLUMNS_ALIEN) * colonne, Constants.Y_POS_INIT_ALIEN
                         + (Constants.ALIEN_HEIGHT + Constants.GAP_LINES_ALIEN) * line,
-                        Constants.ALIEN_WIDTH, Constants.ALIEN_HEIGHT, Images.ALIENMIDDLE1);
+                        Constants.ALIEN_WIDTH, Constants.ALIEN_HEIGHT, Images.ALIENMIDDLE1, 2);
             }
             for (int line = 3; line < 5; line++) {
                 aliens[line][colonne] = new Alien(Constants.X_POS_INIT_ALIEN +
                         (Constants.ALIEN_WIDTH + Constants.GAP_COLUMNS_ALIEN) * colonne,
                         Constants.Y_POS_INIT_ALIEN
                         + (Constants.ALIEN_HEIGHT + Constants.GAP_LINES_ALIEN) * line,
-                        Constants.ALIEN_WIDTH, Constants.ALIEN_HEIGHT, Images.ALIENBOTTOM1);
+                        Constants.ALIEN_WIDTH, Constants.ALIEN_HEIGHT, Images.ALIENBOTTOM1,1);
             }
         }
         // Affichage du tableau d'aliens sur le board
@@ -86,4 +88,6 @@ public class Initialisation {
         }
 
     }
+
+
 }
