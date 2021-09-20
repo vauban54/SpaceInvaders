@@ -9,6 +9,9 @@ public class Images {
     public final static Image SHIP = new Image(PATH + "vaisseau.png");
     public final static Image SHIP_SHOT = new Image(PATH + "ship1Shoot.png");
 
+    public final static Image ALIEN_SHOT = new Image(PATH + "aliensShoot2.png");
+
+
     public final static Image IMG_BRICK1 = new Image(PATH + "wall1.png");
     public final static Image IMG_BRICK2 = new Image(PATH + "wall2.png");
     public final static Image IMG_BRICK3 = new Image(PATH + "wall3.png");
@@ -33,4 +36,6 @@ public class Images {
     public final static Image EX5 = new Image(PATH + "explosion5.png");
     public final static Image EX6 = new Image(PATH + "explosion6.png");
     public final static Image EX7 = new Image(PATH + "explosion7.png");
+
+    public final static Image SAUCER = new Image(PATH + "saucer.png");
 }

@@ -30,8 +30,8 @@ public class Constants {
     public static final int BRICK_POINTS = 5;
 
     /************************ ALIEN *********************/
-    public static final int ALIEN_WIDTH = 33;
-    public static final int ALIEN_HEIGHT = 25;
+    public static final int ALIEN_WIDTH = 32;
+    public static final int ALIEN_HEIGHT = 24;
 
     public static final int X_POS_INIT_ALIEN = 25 + WINDOW_MARGIN;
     public static final int Y_POS_INIT_ALIEN = 50;
@@ -43,6 +43,21 @@ public class Constants {
     public static final int ALIEN_SPEED = 1;
 
     public static final int ALIEN_POINTS = 20;
+
+    /************************ ALIEN SHOT *****************/
+    public static final int ALIEN_SHOT_WIDTH = 10;
+    public static final int ALIEN_SHOT_HEIGHT = 10;
+    public static final int ALIEN_SHOT_DELTAY = 4;
+
+    /************************ SAUCER *********************/
+    public static final int X_POS_INIT_SAUCER = WINDOW_WIDTH;
+    public static final int Y_POS_INIT_SAUCER = 450;
+    public static final int SAUCER_WIDTH = 42;
+    public static final int SAUCER_HEIGHT = 22;
+    public static final int SAUCER_DELTAX = 2;
+
+
+
 
 
 

@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class SpaceController {
 
@@ -27,7 +28,11 @@ public class SpaceController {
     private static long movingAliensCount;
     private Group groupExplosion;
     private final IntegerProperty score = new SimpleIntegerProperty(0);
-
+    private static boolean initStartButton;
+    private static Random random = new Random();
+    private static LinkedList<AlienShot> alienShotList;
+    private Saucer saucer;
+    private long saucerTime = 0;
 
     @FXML
     private Pane board;
@@ -40,19 +45,30 @@ public class SpaceController {
             @Override
             public void handle(long l) {
                 movingAliensCount++;
+                saucerTime++;
                 handleShip();
                 if (ship.isShipIsShooting()) {
                     handleShipShot();
 
                 }
-                shipShotCollisions();
+                collisions();
 
                 // On refresh la position tableau d'aliens en fonction de l'incrémentation de leur vitesse
                 if (movingAliensCount % (100 - (10L * Alien.getSpeed())) == 0) {
                     Alien.aliensMoving(aliens);
                 }
 
+                aliensShooting();
+                AlienShot.handleAlienShot(alienShotList, board);
+                if (saucerTime % 400 == 0) {
+                    saucer = new Saucer(Constants.X_POS_INIT_SAUCER, Constants.Y_POS_INIT_SAUCER,
+                            Constants.SAUCER_WIDTH, Constants.SAUCER_HEIGHT);
+                    board.getChildren().add(saucer);
+                    saucerTime = 1;
 
+                } else if (saucer != null) {
+                    saucer.saucerMoving(Constants.SAUCER_DELTAX);
+                }
             }
         };
     }
@@ -64,20 +80,26 @@ public class SpaceController {
         walls = new LinkedList<>();
         aliens = new  Alien[5][10];
         movingAliensCount = 0;
+        alienShotList = new LinkedList<AlienShot>();
+
 
         lblEndGame.setText("");
     }
 
     @FXML
     void onStartAction() {
-        board.requestFocus();
-        initGame();
-        Initialisation.initShip(ship, board);
-        Initialisation.initShipShot(shipShot, board);
-        Initialisation.initWalls(80, 400, 80, walls, board);
-        Initialisation.initAliens(aliens, board);
-        timer.start();
-        lblScore.textProperty().bind(Bindings.convert(score));
+        if (!initStartButton) {
+            board.requestFocus();
+            initGame();
+            Initialisation.initShip(ship, board);
+            Initialisation.initShipShot(shipShot, board);
+            Initialisation.initWalls(80, 400, 80, walls, board);
+            Initialisation.initAliens(aliens, board);
+            timer.start();
+            lblScore.textProperty().bind(Bindings.convert(score));
+            initStartButton = true;
+        }
+
     }
 
     @FXML
@@ -115,6 +137,73 @@ public class SpaceController {
         }
     }
 
+    private void aliensShooting() {
+        // Pour chaque invader, on détermine aléatoirement s'il tire
+        for (Alien[] alienRow : aliens) {
+            for (Alien alien : alienRow) {
+                if (!alien.isDead()) {
+                    int shootProbability =  5000;
+                    // Si la condition est respectée ...
+                    if (random.nextInt(shootProbability) == 0) {
+                        // ... on instancie un nouveau tir
+                        AlienShot alienShot = new AlienShot(alien.getX() + Constants.ALIEN_WIDTH / 2,
+                                alien.getY() + Constants.ALIEN_HEIGHT,
+                                Constants.ALIEN_SHOT_WIDTH, Constants.ALIEN_SHOT_HEIGHT);
+                        // On ajoute le tir à la liste de tirs
+                        alienShotList.add(alienShot);
+                        // On ajoute le tir sur le board
+                        board.getChildren().add(alienShot);
+                    }
+                }
+
+            }
+        }
+    }
+
+    private void collisions() {
+        shipShotCollisions();
+        aliensShotsBricksCollisions();
+        aliensWallsCollisions();
+    }
+
+    private void aliensWallsCollisions() {
+        // Collision des aliens avec les murs
+        try {
+            for (Brick brick : walls) {
+                for (Alien[] alienRow : aliens) {
+                    for (Alien alien : alienRow) {
+                        if (brick.getBoundsInParent().intersects(alien.getBoundsInParent())) {
+                            walls.removeIf(thisBrick -> thisBrick.equals(brick));
+                            board.getChildren().remove(brick);
+
+                        }
+                    }
+                }
+            }
+        } catch (ConcurrentModificationException e) {
+            System.out.println("ALIENS -> WALL : ConcurrentModificationException !!!");
+        }
+    }
+
+    private void aliensShotsBricksCollisions() {
+        // Collisions des tirs d'alien avec les bricks
+        try {
+            for (Brick brick : walls) {
+                for (AlienShot alienShot : alienShotList) {
+                    if (brick.getBoundsInParent().intersects(alienShot.getBoundsInParent())) {
+                        walls.removeIf(thisBrick -> thisBrick.equals(brick));
+                        alienShotList.removeIf(thisAlienShot -> thisAlienShot.equals(alienShot));
+                        board.getChildren().removeAll(alienShot, brick);
+                        Audio.playSound(Sounds.BRICK_DESTRUCTION);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("ALIEN SHOT -> BRICK : ");
+        }
+    }
+
+
     private void shipShotCollisions() {
         // Collision avec une Brick
         try {
@@ -128,6 +217,8 @@ public class SpaceController {
                     // On retire la brick Brick du mur walls
                     walls.removeIf(thisBrick -> thisBrick.equals(brick));
                     board.getChildren().remove(brick);
+                    //
+                    Audio.playSound(Sounds.BRICK_DESTRUCTION);
                     // On met à jour le score avec la collision d'un tir sur une brick
                     if (score.get() >= Constants.BRICK_POINTS) {
                         score.set(score.get() - Constants.BRICK_POINTS);
@@ -154,8 +245,11 @@ public class SpaceController {
                     // On sort l'alien du board
                     alien.setX(100);
                     alien.setY(-600);
+                    alien.setDead(true);
                     // On retire l'alien du board
                     board.getChildren().remove(alien);
+                    // On émet le son de la déstruction de l'alien
+                    Audio.playSound(Sounds.ALIEN_DESTRUCTION);
                     // On met à jour notre score suivant le type d'alien
                     score.set(score.get() + Constants.ALIEN_POINTS * alien.getType());
                 }
@@ -177,6 +271,14 @@ public class SpaceController {
     @FXML
     void onStopAction() {
         timer.stop();
+        initStartButton = false;
+        walls.clear();
+        alienShotList.clear();
+        Alien.setSpeed(Constants.ALIEN_SPEED);
+        if (saucer != null) {
+            saucer.getSaucerPassingSound().stop();
+        }
+        board.getChildren().clear();
     }
 
 }
