@@ -11,7 +11,7 @@ public class Sounds {
 
     public final static String ALIEN_SHOT = PATH + "alienShotSound1.wav";
 
-    public final static String SAUCER_PASSING = PATH + "sauceurPassingSound.wav";
+    public final static String SAUCER_PASSING = PATH + "saucerPassingSound.wav";
 
 
 }

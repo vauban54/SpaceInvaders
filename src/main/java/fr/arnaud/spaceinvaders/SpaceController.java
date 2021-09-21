@@ -28,7 +28,7 @@ public class SpaceController {
     private static long movingAliensCount;
     private Group groupExplosion;
     private final IntegerProperty score = new SimpleIntegerProperty(0);
-    private static boolean initStartButton;
+    private static boolean initStartButton = false;
     private static Random random = new Random();
     private static LinkedList<AlienShot> alienShotList;
     private Saucer saucer;
@@ -77,7 +77,7 @@ public class SpaceController {
         ship = new Ship(Constants.X_PDS_INIT_SHIP,Constants.Y_PDS_INIT_SHIP,
                 Constants.SHIP_WIDTH,Constants.SHIP_HEIGHT);
         shipShot = new ShipShot(-10,-10,Constants.SHIP_SHOT_WIDTH,Constants.SHIP_SHOT_HEIGHT);
-        walls = new LinkedList<>();
+        walls = new LinkedList<Brick>();
         aliens = new  Alien[5][10];
         movingAliensCount = 0;
         alienShotList = new LinkedList<AlienShot>();
@@ -96,6 +96,8 @@ public class SpaceController {
             Initialisation.initWalls(80, 400, 80, walls, board);
             Initialisation.initAliens(aliens, board);
             timer.start();
+
+            // On lie le lblscore avec notre IntegerProperty -> score
             lblScore.textProperty().bind(Bindings.convert(score));
             initStartButton = true;
         }
@@ -127,7 +129,10 @@ public class SpaceController {
     private void handleShip() {
         shipMoveHorizontal(shipDeltaX);
     }
+    private void shipMoveHorizontal(int shipDeltaX) {
 
+        ship.setX(ship.shipMoving(shipDeltaX));
+    }
     private void handleShipShot() {
         // On veut que le vaisseau ne puisse pas tirer de rafales
         if (shipShot.getY() <= -20) {
@@ -175,7 +180,8 @@ public class SpaceController {
                         if (brick.getBoundsInParent().intersects(alien.getBoundsInParent())) {
                             walls.removeIf(thisBrick -> thisBrick.equals(brick));
                             board.getChildren().remove(brick);
-
+                            // On peut aussi gérer le son
+                            //Audio.playSound(Sounds.BRICK_DESTRUCTION);
                         }
                     }
                 }
@@ -198,14 +204,14 @@ public class SpaceController {
                     }
                 }
             }
-        } catch (Exception e) {
-            System.out.println("ALIEN SHOT -> BRICK : ");
+        } catch (ConcurrentModificationException e) {
+            System.out.println("ALIEN SHOT -> BRICK : ConcurrentModificationException !!!");
         }
     }
 
 
     private void shipShotCollisions() {
-        // Collision avec une Brick
+        // Collision avec une Brick brick
         try {
             for (Brick brick : walls) {
                 if (brick.getBoundsInParent().intersects(shipShot.getBoundsInParent())) {
@@ -217,7 +223,7 @@ public class SpaceController {
                     // On retire la brick Brick du mur walls
                     walls.removeIf(thisBrick -> thisBrick.equals(brick));
                     board.getChildren().remove(brick);
-                    //
+                    // On émet le son de destruction d'une brick
                     Audio.playSound(Sounds.BRICK_DESTRUCTION);
                     // On met à jour le score avec la collision d'un tir sur une brick
                     if (score.get() >= Constants.BRICK_POINTS) {
@@ -238,11 +244,13 @@ public class SpaceController {
                     shipShot.setY(-10);
                     // On réautorise à tirer en appuyant sur ESPACE
                     ship.setShipIsShooting(false);
+                    // On instancie un nouveau Group : groupExplosion
                     groupExplosion = new Group(Explosion.explode());
                     groupExplosion.setLayoutX(alien.getX()-10);
                     groupExplosion.setLayoutY(alien.getY()-10);
                     board.getChildren().addAll(groupExplosion);
-                    // On sort l'alien du board
+                    // On sort l'alien du board ET on fait bien attention de le placer au delà du niveau de la marge
+                    // De manière à ne pas gêner leurs mouvements futurs
                     alien.setX(100);
                     alien.setY(-600);
                     alien.setDead(true);
@@ -258,10 +266,7 @@ public class SpaceController {
 
     }
 
-    private void shipMoveHorizontal(int shipDeltaX) {
 
-        ship.setX(ship.shipMoving(shipDeltaX));
-    }
 
     @FXML
     void onKeyReleased() {
@@ -275,10 +280,11 @@ public class SpaceController {
         walls.clear();
         alienShotList.clear();
         Alien.setSpeed(Constants.ALIEN_SPEED);
+        board.getChildren().clear();
         if (saucer != null) {
             saucer.getSaucerPassingSound().stop();
         }
-        board.getChildren().clear();
+
     }
 
 }
