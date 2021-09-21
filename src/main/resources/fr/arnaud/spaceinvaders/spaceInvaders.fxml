@@ -15,22 +15,22 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.arnaud.spaceinvaders.SpaceController">
    <children>
+      <ImageView fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/background.png" />
+         </image>
+      </ImageView>
       <Pane fx:id="board" prefHeight="600.0" prefWidth="600.0">
          <children>
-            <ImageView fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/background.png" />
-               </image>
-            </ImageView>
             <Label fx:id="lblEndGame" alignment="CENTER" contentDisplay="CENTER" layoutY="252.0" prefWidth="600.0" textAlignment="CENTER" textFill="#009402">
                <font>
                   <Font name="Arial Bold" size="85.0" />
                </font>
             </Label>
-            <Pane layoutY="535.0" prefHeight="65.0" prefWidth="600.0" style="-fx-background-color: Black;" />
          </children>
       </Pane>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#009402" height="5.0" stroke="BLACK" strokeType="INSIDE" width="540.0" x="30.0" y="530.0" />
+      <Pane layoutY="535.0" prefHeight="65.0" prefWidth="600.0" style="-fx-background-color: Black;" />
       <HBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="535.0" prefHeight="65.0" prefWidth="540.0">
          <children>
             <Button mnemonicParsing="false" onAction="#onStartAction" prefHeight="37.0" prefWidth="90.0" style="-fx-background-color: Transparent; -fx-background-radius: 10; -fx-border-style: solid; -fx-border-width: 2; -fx-border-radius: 10; -fx-border-color: #009402;" text="Start" textFill="#009402">

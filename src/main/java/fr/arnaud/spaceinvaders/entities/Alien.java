@@ -11,12 +11,15 @@ public class Alien extends Entity {
     private static boolean alienPosition = true;
     private static int speed = Constants.ALIEN_SPEED;
     private int type;
+    // On ajoute une propriété booléenne
+    private boolean isDead;
 
     public Alien(double x, double y, double width, double height, Image image) {
         super(x, y, width, height);
         super.setImg(image);
         super.setImgPattern(new ImagePattern(super.getImg()));
         super.setFill(super.getImgPattern());
+        this.isDead = false;
     }
 
     public Alien(double x, double y, double width, double height, Image image, int type) {
@@ -103,5 +106,13 @@ public class Alien extends Entity {
         Alien.speed = speed;
 
 
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
     }
 }
