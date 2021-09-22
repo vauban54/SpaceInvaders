@@ -1,17 +1,17 @@
 package fr.arnaud.spaceinvaders.utils;
 
-public class Sounds {
+public interface Sounds {
 
-    private final static String PATH = "File:./src/main/resources/fr/arnaud/spaceinvaders/sounds/";
+    String PATH = "File:./src/main/resources/fr/arnaud/spaceinvaders/sounds/";
 
-    public final static String BRICK_DESTRUCTION = PATH + "brickDestructionSound.wav";
-    public final static String SHIP_SHOT = PATH + "shipShotSound.wav";
-    public final static String ALIEN_DESTRUCTION = PATH + "alienDeadSound.wav";
-    public final static String SHIP_DESTRUCTION = PATH + "shipDestructionSound.wav";
+    String BRICK_DESTRUCTION = PATH + "brickDestructionSound.wav";
+    String SHIP_SHOT = PATH + "shipShotSound.wav";
+    String ALIEN_DESTRUCTION = PATH + "alienDeadSound.wav";
+    String SHIP_DESTRUCTION = PATH + "shipDestructionSound.wav";
 
-    public final static String ALIEN_SHOT = PATH + "alienShotSound1.wav";
+    String ALIEN_SHOT = PATH + "alienShotSound1.wav";
 
-    public final static String SAUCER_PASSING = PATH + "saucerPassingSound.wav";
+    String SAUCER_PASSING = PATH + "saucerPassingSound.wav";
 
 
 }

@@ -3,21 +3,25 @@ package fr.arnaud.spaceinvaders;
 import fr.arnaud.spaceinvaders.entities.*;
 import fr.arnaud.spaceinvaders.utils.*;
 import javafx.animation.AnimationTimer;
+import javafx.animation.Interpolator;
+import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class SpaceController {
+public class SpaceController implements Sounds{
 
     private Ship ship;
     private ShipShot shipShot;
@@ -38,7 +42,10 @@ public class SpaceController {
     private Pane board;
 
     @FXML
-    private Label lblEndGame, lblScore;
+    private Label lblEndGame, lblLeftScore, lblRightScore;
+
+    @FXML
+    private ImageView imgLogo;
 
     public SpaceController() {
         timer = new AnimationTimer() {
@@ -82,13 +89,22 @@ public class SpaceController {
         movingAliensCount = 0;
         alienShotList = new LinkedList<AlienShot>();
 
-
         lblEndGame.setText("");
     }
 
     @FXML
-    void onStartAction() {
+    public void onStartAction() {
         if (!initStartButton) {
+            // On play la petite animation de début
+
+            TranslateTransition animation = new TranslateTransition(Duration.millis(800), imgLogo);
+            animation.setFromY(50);
+            animation.setToY(-500);
+            animation.setInterpolator(Interpolator.EASE_OUT);
+            animation.play();
+
+
+
             board.requestFocus();
             initGame();
             Initialisation.initShip(ship, board);
@@ -98,7 +114,11 @@ public class SpaceController {
             timer.start();
 
             // On lie le lblscore avec notre IntegerProperty -> score
-            lblScore.textProperty().bind(Bindings.convert(score));
+            lblRightScore.textProperty().bind(Bindings.convert(score));
+            // On rend visible les deux labels qui concernent le score
+            lblLeftScore.setVisible(true);
+            lblRightScore.setVisible(true);
+            score.set(0);
             initStartButton = true;
         }
 
@@ -119,7 +139,7 @@ public class SpaceController {
                 if (!ship.isShipIsShooting()) {
                     ship.setShipIsShooting(true);
                     ShipShot.shipShotPlacement(shipShot, ship);
-                    Audio.playSound(Sounds.SHIP_SHOT);
+                    Audio.playSound(SHIP_SHOT);
                 }
                 break;
 
@@ -284,7 +304,9 @@ public class SpaceController {
         if (saucer != null) {
             saucer.getSaucerPassingSound().stop();
         }
-
+        // On rend invisible les deux labels qui concernent le score
+        lblLeftScore.setVisible(false);
+        lblRightScore.setVisible(false);
     }
 
 }
