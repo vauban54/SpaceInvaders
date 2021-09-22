@@ -97,11 +97,7 @@ public class SpaceController implements Sounds{
         if (!initStartButton) {
             // On play la petite animation de début
 
-            TranslateTransition animation = new TranslateTransition(Duration.millis(800), imgLogo);
-            animation.setFromY(50);
-            animation.setToY(-500);
-            animation.setInterpolator(Interpolator.EASE_OUT);
-            animation.play();
+            Animation.animateLogoSpaceInvaders(imgLogo,0,-500,600,1,0,400);
 
 
 
@@ -307,6 +303,8 @@ public class SpaceController implements Sounds{
         // On rend invisible les deux labels qui concernent le score
         lblLeftScore.setVisible(false);
         lblRightScore.setVisible(false);
+
+        Animation.animateLogoSpaceInvaders(imgLogo,-500,0,600,0,1,1000);
     }
 
 }
