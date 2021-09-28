@@ -1,12 +1,9 @@
 package fr.arnaud.spaceinvaders.entities;
 
-import fr.arnaud.spaceinvaders.utils.Audio;
 import fr.arnaud.spaceinvaders.utils.Constants;
 import fr.arnaud.spaceinvaders.utils.Images;
-import fr.arnaud.spaceinvaders.utils.Sounds;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
-
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 
@@ -35,7 +32,5 @@ public class AlienShot extends Entity {
         } catch (ConcurrentModificationException e) {
             System.out.println("ALIEN SHOT -> CONCURENT MODIFICATION EXCEPTION");
         }
-        }
-
-
+    }
 }

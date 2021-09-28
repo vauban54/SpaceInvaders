@@ -2,25 +2,33 @@ package fr.arnaud.spaceinvaders.utils;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 
-public class Images {
+public abstract class Images {
 
     private final static String PATH = "File:./src/main/resources/fr/arnaud/spaceinvaders/images/";
 
-    public final static Image SHIP = new Image(PATH + "vaisseau.png");
+    public final static Image SHIP1 = new Image(PATH + "vaisseau.png");
+    public final static Image SHIP2 = new Image(PATH + "ship1center.png");
+
     public final static Image SHIP_SHOT = new Image(PATH + "ship1Shoot.png");
 
     public final static Image ALIEN_SHOT = new Image(PATH + "aliensShoot2.png");
 
 
-    public final static Image IMG_BRICK1 = new Image(PATH + "wall1.png");
-    public final static Image IMG_BRICK2 = new Image(PATH + "wall2.png");
-    public final static Image IMG_BRICK3 = new Image(PATH + "wall3.png");
-    public final static Image IMG_BRICK4 = new Image(PATH + "wall4.png");
+    private final static Image IMG_BRICK1 = new Image(PATH + "bricks/brick1.png");
+    private final static Image IMG_BRICK2 = new Image(PATH + "bricks/brick2.png");
+    private final static Image IMG_BRICK3 = new Image(PATH + "bricks/brick3.png");
+    private final static Image IMG_BRICK4 = new Image(PATH + "bricks/brick4.png");
+    private final static Image IMG_BRICK5 = new Image(PATH + "bricks/brick5.png");
+    private final static Image IMG_BRICK6 = new Image(PATH + "bricks/brick6.png");
+    private final static Image IMG_BRICK7 = new Image(PATH + "bricks/brick7.png");
 
     public final static ImagePattern BRICK1 = new ImagePattern(IMG_BRICK1);
     public final static ImagePattern BRICK2 = new ImagePattern(IMG_BRICK2);
     public final static ImagePattern BRICK3 = new ImagePattern(IMG_BRICK3);
     public final static ImagePattern BRICK4 = new ImagePattern(IMG_BRICK4);
+    public final static ImagePattern BRICK5 = new ImagePattern(IMG_BRICK5);
+    public final static ImagePattern BRICK6 = new ImagePattern(IMG_BRICK6);
+    public final static ImagePattern BRICK7 = new ImagePattern(IMG_BRICK7);
 
     public final static Image ALIENHIGHT1 = new Image(PATH + "alienHigh1.png");
     public final static Image ALIENHIGHT2 = new Image(PATH + "alienHigh2.png");
@@ -29,13 +37,39 @@ public class Images {
     public final static Image ALIENBOTTOM1 = new Image(PATH + "alienBottom1.png");
     public final static Image ALIENBOTTOM2 = new Image(PATH + "alienBottom2.png");
 
-    public final static Image EX1 = new Image(PATH + "explosion1.png");
-    public final static Image EX2 = new Image(PATH + "explosion2.png");
-    public final static Image EX3 = new Image(PATH + "explosion3.png");
-    public final static Image EX4 = new Image(PATH + "explosion4.png");
-    public final static Image EX5 = new Image(PATH + "explosion5.png");
-    public final static Image EX6 = new Image(PATH + "explosion6.png");
-    public final static Image EX7 = new Image(PATH + "explosion7.png");
+    public final static Image ALIEN_EX1 = new Image(PATH + "explosionAlien/ExAlien1.png");
+    public final static Image ALIEN_EX2 = new Image(PATH + "explosionAlien/ExAlien2.png");
+    public final static Image ALIEN_EX3 = new Image(PATH + "explosionAlien/ExAlien3.png");
+    public final static Image ALIEN_EX4 = new Image(PATH + "explosionAlien/ExAlien4.png");
+    public final static Image ALIEN_EX5 = new Image(PATH + "explosionAlien/ExAlien5.png");
+    public final static Image ALIEN_EX6 = new Image(PATH + "explosionAlien/ExAlien6.png");
+    public final static Image ALIEN_EX7 = new Image(PATH + "explosionAlien/ExAlien7.png");
+    public final static Image ALIEN_EX8 = new Image(PATH + "explosionAlien/ExAlien8.png");
+
+    public final static Image ALIEN_SHOOT_EX1 = new Image(PATH + "explosionAlienShoot/ExShoot1.png");
+    public final static Image ALIEN_SHOOT_EX2 = new Image(PATH + "explosionAlienShoot/ExShoot2.png");
+    public final static Image ALIEN_SHOOT_EX3 = new Image(PATH + "explosionAlienShoot/ExShoot3.png");
+    public final static Image ALIEN_SHOOT_EX4 = new Image(PATH + "explosionAlienShoot/ExShoot4.png");
+    public final static Image ALIEN_SHOOT_EX5 = new Image(PATH + "explosionAlienShoot/ExShoot5.png");
+    public final static Image ALIEN_SHOOT_EX6 = new Image(PATH + "explosionAlienShoot/ExShoot6.png");
+    public final static Image ALIEN_SHOOT_EX7 = new Image(PATH + "explosionAlienShoot/ExShoot7.png");
+
+
+    public final static Image SHIP_SHOOT_EX1 = new Image(PATH + "explosionShip/ExShip1.png");
+    public final static Image SHIP_SHOOT_EX2 = new Image(PATH + "explosionShip/ExShip2.png");
+    public final static Image SHIP_SHOOT_EX3 = new Image(PATH + "explosionShip/ExShip3.png");
+    public final static Image SHIP_SHOOT_EX4 = new Image(PATH + "explosionShip/ExShip4.png");
+    public final static Image SHIP_SHOOT_EX5 = new Image(PATH + "explosionShip/ExShip5.png");
+    public final static Image SHIP_SHOOT_EX6 = new Image(PATH + "explosionShip/ExShip6.png");
+    public final static Image SHIP_SHOOT_EX7 = new Image(PATH + "explosionShip/ExShip7.png");
+    public final static Image SHIP_SHOOT_EX8 = new Image(PATH + "explosionShip/ExShip8.png");
+    public final static Image SHIP_SHOOT_EX9 = new Image(PATH + "explosionShip/ExShip9.png");
+    public final static Image SHIP_SHOOT_EX10 = new Image(PATH + "explosionShip/ExShip10.png");
+    public final static Image SHIP_SHOOT_EX11 = new Image(PATH + "explosionShip/ExShip11.png");
+
+
 
     public final static Image SAUCER = new Image(PATH + "saucer.png");
+    public final static Image SAUCER_100 = new Image(PATH + "saucer100.png");
+
 }

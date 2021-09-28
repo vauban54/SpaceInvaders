@@ -11,7 +11,8 @@ public class Alien extends Entity {
     private static boolean alienPosition = true;
     private static int speed = Constants.ALIEN_SPEED;
     private int type;
-    // On ajoute une propriété booléenne
+    // On ajoute une propriété booléenne dead pour définir le gain de la
+    // ET que l'alien arrête bien de tirer une fois mort
     private boolean isDead;
 
     public Alien(double x, double y, double width, double height, Image image) {
@@ -22,6 +23,7 @@ public class Alien extends Entity {
         this.isDead = false;
     }
 
+    // Constructeur supplémentaire avec le type d'alien précisé,qui influera sur le score
     public Alien(double x, double y, double width, double height, Image image, int type) {
         super(x, y, width, height);
         super.setImg(image);
@@ -38,7 +40,7 @@ public class Alien extends Entity {
 
                 }
             }
-        } else {
+        } else { // Déplacement vers la gauche
             for (int column = 0; column < 10; column++) {
                 for (int line = 0; line < 5; line++) {
                     aliens[line][column].setX(aliens[line][column].getX() - Constants.ALIEN_DELTAX);
@@ -70,8 +72,7 @@ public class Alien extends Entity {
             }
             // Puis, ils se dirignet dans l'autre sens...
             goRight = false;
-            // Puis, leur vitesse augmente
-            //TODO
+            // Puis, leur vitesse augmente de 1
             if (Alien.getSpeed() < 9) {
                 Alien.setSpeed(Alien.getSpeed() + 1);
             }
@@ -85,8 +86,7 @@ public class Alien extends Entity {
             }
             // Puis, ils se dirignet dans l'autre sens...
             goRight = true;
-            // Puis, leur vitesse augmente
-            //TODO
+            // Puis, leur vitesse augmente de 1
             if (Alien.getSpeed() < 9) {
                 Alien.setSpeed(Alien.getSpeed() + 1);
             }
@@ -102,11 +102,7 @@ public class Alien extends Entity {
         return type;
     }
 
-    public static void setSpeed(int speed) {
-        Alien.speed = speed;
-
-
-    }
+    public static void setSpeed(int speed) { Alien.speed = speed;  }
 
     public boolean isDead() {
         return isDead;

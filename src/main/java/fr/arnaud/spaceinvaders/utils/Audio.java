@@ -7,7 +7,9 @@ public class Audio {
     private final AudioClip audioClip;
 
     public Audio(String soundPath) {
+
         this.audioClip = new AudioClip(soundPath);
+        this.audioClip.setVolume(0.05);
     }
 
     private void play() {

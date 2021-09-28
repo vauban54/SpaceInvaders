@@ -11,7 +11,7 @@ public class Ship extends Entity {
 
     public Ship(double x, double y, double width, double height) {
         super(x, y, width, height);
-        super.setImgPattern(new ImagePattern(Images.SHIP));
+        super.setImgPattern(new ImagePattern(Images.SHIP1));
         super.setFill(super.getImgPattern());
         this.shipIsShooting = false;
     }

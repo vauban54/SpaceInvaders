@@ -7,6 +7,8 @@ import fr.arnaud.spaceinvaders.entities.ShipShot;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -87,6 +89,16 @@ public class Initialisation {
             }
         }
 
+    }
+    public static void initSaucer100(Rectangle saucer100Rect, Pane board) {
+        saucer100Rect.setWidth(Constants.SAUCER_SCORE_WIDTH);
+        saucer100Rect.setHeight(Constants.SAUCER_HEIGHT);
+        ImagePattern saucer100 = new ImagePattern(Images.SAUCER_100);
+        saucer100Rect.setFill(saucer100);
+
+        saucer100Rect.setX(Constants.X_POS_INIT_SAUCER_SCORE);
+        saucer100Rect.setY(Constants.Y_POS_INIT_SAUCER_SCORE);
+        board.getChildren().add(saucer100Rect);
     }
 
 
